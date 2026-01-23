@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <input type="radio" name="gender" value="male" onchange="changeGender()"> Male <!--camle case (create function)-->
+    <input type="radio" name="gender" value="female" onchange="changeGender()" > Female
+
+    <script>
+        function changeGender(){
+            //เลือก gender ทั้งหมด
+            let genders = document.querySelectorAll('input[name="gender"]');
+
+            //ดูว่าอันไหน check
+            for(let i = 0; i < genders.length; i++){
+                if(genders[i].checked){
+                    console.log("Selected gender: " + genders[i].value);
+                }
+            }
+        }
+    </script>
+        
+</body>
+</html>
+
+<!--
+        1.event on click
+        <button onclick="userClick()">Click Me </button>  
+        <div onclick="divClick()">Click div</div>
+        <script>
+        function userClick() {
+            console.log("Button was clicked!");
+        }
+        function divClick() {
+            console.log("Div was clicked!");
+        }
+            
+        2.event on change        
+        function changeGender(){
+            console.log("Gender charged"); 
+        }
+
+        body
+        ชื่อ: <input //input text
+        id="fname" class="input" type="text" name = "fname" value="ชื่อทดสอบ">
+        นามสกุล: <input 
+        id="lname" class="input" type="text" name = "lname" value="นามสกุลทดสอบ">
+        เบอร์โทร: <input
+        id="phone" class="input" type="text" name = "phone" value="0123456789"> //จัดบรรทัดได้
+        let inputs = document.querySelector('input[name="fname"]');
+        console.log(inputs.value) //.length) = 2
+        let fnameInput = document.getElementById('fname');
+        console.log(fnameInput.value);
+        let lnameInput = document.getElementById('lname');
+        console.log(lnameInput.value);
+
+        for (let i = 0; i < inputs.length; i++) { //เข้าถึง input แต่ละตัว
+            console.log(inputs[i].value);
+        }
+        let inputs = document.querySelector('#fname'); //เข้าถึง input ตัวเดียว
+
+        งานอดิเรก:
+        <input type="checkbox" name="fname" value="ฟุตบอล"> ฟุตบอล
+        <input type="checkbox" name="fname" value="บาสเกตบอล"> บาสเกตบอล
+        <input type="checkbox" name="fname" value="ว่ายน้ำ"> ว่ายน้ำ
+        let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        console.log(checkboxes); 
+        for (let i = 0; i < checkboxes.length; i++) { //เข้าถึง checkbox แต่ละตัว
+            console.log(checkboxes[i].value);
+        }
+ -->
