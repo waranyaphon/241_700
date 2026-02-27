@@ -1,125 +1,213 @@
-/*//ทำการ import module http
+const express = require('express');
+const bodyParser = require('body-parser');
+const mysql = require('mysql2/promise');
+const app = express();
+
+app.use(bodyParser.json());
+
+const port = 8000;
+
+/*app.get('/testdb', (req, res) => {
+    mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: 'root',
+        database: 'webdb',
+        port: 8700
+    }).then((conn) => {
+        conn.query('SELECT * FROM users').then((result) => {
+            res.json(result[0]);
+        }).catch((err) => {
+            res.json({error: err.message});
+        });
+    });
+})*/
+
+let conn = null;
+const initMySQL = async () => {
+    conn = await mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: 'root',
+        database: 'webdb',
+        port: 8700
+    });
+    console.log('Connected to MySQL database');
+}
+
+//path: = GET /users for get all users from database
+app.get('/users', async (req, res) => {
+    const result = await conn.query('SELECT * FROM users');
+    res.json(result[0])
+});
+
+//path: = POST /users for add new user
+app.post('/users', async (req, res) => {
+    try {
+        let user = req.body;
+        const results = await conn.query('INSERT INTO users Set ?', user);
+        res.json({
+            Message: 'User added successfully',
+            data: results[0]
+        });
+    } catch (error) {
+        console.log('Error inserting user:', error);
+        res.status(500).json({ Message: 'Error adding user' });
+    }
+});
+
+//path: = GET /users/:id for get user by id
+app.get('/users/:id', async (req, res) => {
+    try {
+        let id = req.params.id;
+        const results = await conn.query('SELECT * FROM users WHERE id = ?', id);
+        if (results[0].length === 0) {
+            throw { statusCode: 404, message: 'User not found' };
+        }
+        res.json(results[0][0]);
+    } catch (error) {
+        console.log('Error fetching user:', error);
+        let statusCode = error.statusCode || 500;
+        res.status(statusCode).json({
+            message: error.message || 'Error fetching user'
+        });
+    }
+});
+
+//path: = PUT /users/:id for update user by id
+app.put('/users/:id', async (req, res) => {
+    try {
+        let id = req.params.id;
+        let updatedUser = req.body;
+        const results = await conn.query('UPDATE users SET ? WHERE id = ?', [updatedUser, id]);
+        res.json({
+            message: 'User updated successfully',
+            data: results[0]
+        });
+    } catch (error) {
+        console.log('Error updating user:', error);
+        res.status(500).json({ message: 'Error updating user' });
+    }
+});
+
+//path: = DELETE /users/:id for delete user by id
+app.delete('/users/:id', async (req, res) => {
+    try {
+        let id = req.params.id;
+        const results = await conn.query('DELETE FROM users WHERE id = ?', id);
+        res.json({
+            message: 'User deleted successfully',
+            data: results[0]
+        });
+    } catch (error) {
+        console.log('Error deleting user:', error);
+        res.status(500).json({ message: 'Error deleting user' });
+    }
+});
+
+app.listen(port, async () => {
+    await initMySQL();
+    console.log(`Server is running on http://localhost:${port}`);
+});
+
+
+/*ใช้ async await ง่ายกว่า
+app.get('/testdb-new', async (req, res) => {
+    try {
+        const result = await conn.query('SELECT * FROM users');
+        res.json(result[0]);
+    } catch (err) {
+        console.error('Error connecting to the database:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});*/
+
+/*path: = /GET /users
+app.get('/users', (req, res) => {
+    res.json(users);
+});
+
+//path: = POST /user
+app.post('/user', (req, res) => {
+    let user = req.body;
+    user.id = counter
+    counter += 1;
+
+    users.push(user);
+    res.json({
+        Message: 'User added successfully',
+        user: user
+    });
+});
+
+// path: = PUT /user/:id
+app.patch('/user/:id', (req, res) => {
+    let id = req.params.id;
+    let updatedUser = req.body;
+
+    //หา user ที่จาก id ที่ส่งมา
+    let selectedIndex = users.findIndex(user => user.id == id);
+
+    //อัปเดตข้อมูล users
+    if (updatedUser.firstname) {
+        users[selectedIndex].firstname = updatedUser.firstname;
+    }
+    if (updatedUser.lastname) {
+        users[selectedIndex].lastname = updatedUser.lastname;
+    }
+
+    res.json({
+        Message: 'User updated successfully',
+        data: {
+            user: updatedUser,
+            indexupdate: selectedIndex
+        }
+    });
+    //ส่ง users ที่อัปเดตแล้วกลับไป
+});
+
+app.delete('/users/:id', (req, res) => {
+    let id = req.params.id;
+    //หา index จาก id ที่ต้องการลบ
+    let selectedIndex = users.findIndex(user => user.id == id);
+
+    //ลบ user ออกจาก users
+    users.splice(selectedIndex, 1);
+
+    res.json({
+        Message: 'User deleted successfully',
+        indexupdate: selectedIndex
+    });
+});*/
+
+
+
+
+
+
+/**ทำการ import โมดูล http
 const http = require('http');
 const host = 'localhost';
 const port = 8000;
 
 //กำหนดค่า server
-const reqestListener = function (req, res) {
+const requestListener = function (req, res) {
     res.writeHead(200);
-    res.end('Hello, Its my first server!');
+    res.end('Hello, World! this is my first server.');
 }
 
 //run server
-const server = http.createServer(reqestListener);
+const server = http.createServer(requestListener);
 server.listen(port, host, () => {
     console.log(`Server is running on http://${host}:${port}`);
-});*/
-
-//path: = /test
-/*app.get('/test', (req, res) => {
-    let user = {
-        name: 'John Doe',
-        age: 30,
-        email: "john.doe@example.com"
-    }
-  res.json(user); //ส่งข้อมูลในรูปแบบ json
-}); */
-
-
-const express = require('express');
-const bodyParser = require('body-parser');
-const app = express();
-
-//app.use(bodyParser.text());
-app.use(bodyParser.json());
-
-const port = 8000;
-
+});
 let users = [];
-let counter = 1;
+let counter = 1;*/
 
 /**
- GET /users -> ดึงข้อมูล users ทั้งหมด
- POST /user -> เพิ่ม user ใหม่
- GET /user/:id -> ดึงข้อมูล user ตาม id
- PUT /user/:id -> แก้ไขข้อมูล user ตาม id ที่บันทึก
- DELETE /user/:id -> ลบ user ตาม id ที่บันทึก
- */
-
-//'path: = GET /users
-app.get('/users', (req, res) => {
-  res.json(users); 
-});
-
-//path: = POST /user การเพิ่มข้อมูล
-app.post('/user', (req, res) => {
-    //res.json({ message: 'Data received successfully!' });
-    let user = req.body; //รับข้อมูลจาก client
-    user.id = counter;
-    counter += 1;
-    users.push(user);
-    res.json({ message: 'User added successfully!', 
-    user: user 
-    });
-   //res.send(req.body); //ส่งข้อมูลที่ได้รับกลับไปยัง client
-});
-
-//path : = PUT /user/:id edit เปลี่ยน put->patch
-app.patch('/user/:id', (req, res) => {
-    let id = req.params.id;
-    let updateUser = req.body;
-    
-    let selectedIndex = users.findIndex(user => user.id == id);
-
-    //อัพเดทข้อมูล user
-    if (updateUser.Firstname){
-        users[selectedIndex].Firstname = updateUser.Firstname;
-    }
-    if (updateUser.Lastname){
-        users[selectedIndex].Lastname = updateUser.Lastname;
-    }
-
-    //users[selectedIndex].firstName = updateUser.Firstname || users[selectedIndex].firstName;
-    //users[selectedIndex].lastName = updateUser.Lastname || users[selectedIndex].lastName;
-
-    res.json({
-        message: 'User updated successfully!',
-        data: {
-            user: updateUser,
-            indexUpdate: selectedIndex
-        }
-    });
-    //users[selectedIndex] = req.body;
-    //ส่ง users ที่อัพเดทแล้วกลับไป
-    });
-    app.delete('/users/:id', (req, res) => {
-        let id = req.params.id;
-        //หา user จาก id ที่ต้องการลบ
-        let selectedIndex = users.findIndex(user => user.id == id);
-        users.splice(selectedIndex, 1);
-
-        //ลบ user ออกจาก users
-        //delete users[selectedIndex];
-        res.json({
-            message: 'User deleted successfully!',
-            indexDelete: selectedIndex
-        });
-
-
-});
-
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
-
-/**let selectedIndex = users.findIndex(user => {
-        if(user.id == id) {
-            return true;
-        }else{
-            return false;
-        }
-    });
-    res.send(selectedIndex);*/
-    // ลดรูปจากข้างบน
-    //หา user จาก id ที่ส่งมา
-
+    GET /users => ดึงข้อมูลผู้ใช้ทั้งหมด
+    POST /user => เพิ่มผู้ใช้ใหม่
+    GET /user/:id => ดึงข้อมูลผู้ใช้ตาม id
+    PUT /user/:id => แก้ไขข้อมูลผู้ใช้ตาม id ที่บันทึก
+    DELETE /user/:id => ลบผู้ใช้ตาม id ที่บันทึก
+*/
