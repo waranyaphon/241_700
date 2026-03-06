@@ -2,6 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2/promise');
 const app = express();
+const cors = require('cors');
+
+app.use(cors());
 
 app.use(bodyParser.json());
 
@@ -179,11 +182,6 @@ app.delete('/users/:id', (req, res) => {
         indexupdate: selectedIndex
     });
 });*/
-
-
-
-
-
 
 /**ทำการ import โมดูล http
 const http = require('http');

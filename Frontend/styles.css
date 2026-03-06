@@ -21,7 +21,7 @@
 }
  
 body {
-    background-color: #f5f7fa;
+    background-color: #095334;
     margin: 0;
     display: flex;
     justify-content: center;
@@ -91,4 +91,22 @@ textarea {
 
 .button:hover {
     background-color: #45a049;
+}
+
+.message {
+    background-color: lightgray;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    display: none;
+}
+
+.message.success {
+    background-color: lightgreen;
+    display: block;
+}
+
+.message.danger {
+    background-color: lightcoral;
+    display: block;
 }
