@@ -1,0 +1,102 @@
+/* นำเข้าฟอนต์ Kanit */
+@font-face {
+    font-family: 'Kanit';
+    src: url('../Kanit/Kanit-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Kanit', sans-serif;
+}
+
+/* 1. จัดพื้นหลังรูปภาพ และให้เนื้อหาอยู่กึ่งกลางหน้าจอ */
+body {
+    background-image: url('https://i.pinimg.com/736x/92/24/73/9224738bb877c16fda3b343c50e667ba.jpg');
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #333;
+}
+
+/* 2. สร้างกล่องกระจกใสตรงกลาง (Glassmorphism) */
+.container {
+    background: rgba(255, 255, 255, 0.2); 
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px); 
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    
+    width: 100%;
+    max-width: 600px; /* ปรับให้กว้างกว่าหน้าฟอร์ม จะได้แสดงชื่อได้ยาวๆ */
+    max-height: 80vh; /* จำกัดความสูงของกล่องไม่ให้ทะลุจอ */
+    overflow-y: auto; /* ถ้าชื่อเยอะเกิน ให้เลื่อนสกอร์บาร์ในกล่องได้ */
+}
+
+/* ตกแต่งส่วนหัว */
+h2 {
+    text-align: center;
+    margin-top: 10px;
+    color: #333;
+}
+
+a {
+    color: #2a5391;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* 3. ตกแต่งรายชื่อ (ul, li) ที่จะถูกสร้างจาก JavaScript */
+ul {
+    list-style-type: none; /* เอาจุดไข่ปลาหน้าลิสต์ออก */
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    background: rgba(255, 255, 255, 0.4); /* ทำให้แต่ละแถวมีสีขาวจางๆ */
+    margin-bottom: 10px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between; /* ดันให้ชื่ออยู่ซ้าย ปุ่มอยู่ขวา */
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* 4. ตกแต่งปุ่ม Edit และ Delete */
+button {
+    padding: 6px 12px;
+    margin-left: 5px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+    background-color: #2a5391; /* สีปุ่ม Edit */
+    color: white;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+/* คลาสพิเศษสำหรับปุ่มลบ (อ้างอิงจากคลาส 'delete' ใน JS ของคุณ) */
+.delete {
+    background-color: #ff4d4d;
+}

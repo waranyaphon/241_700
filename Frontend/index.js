@@ -64,9 +64,14 @@ const submitData = async () => {
     } catch (error) {
         console.log('error message', error.message);
         console.log('error', error.errors);
-        //if (error.response) {
-        //    console.error('Error response:', error.response.data.message);
-        //}
+
+        //แก้+เพิ่ม
+        if (error.response) {
+            console.error('Error response:', error.response.data.message);
+            error.message = error.response.data.message
+            error.errors = error.response.data.errors
+        }
+
         let htmlData = '<div>'
         htmlData += `<div>${error.message}</div>`;
         htmlData += '<ul>'

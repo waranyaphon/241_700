@@ -1,7 +1,5 @@
-/* 1. ดึง Font จากโฟลเดอร์ Kanit ที่อยู่ด้านนอก */
 @font-face {
     font-family: 'Kanit';
-    /* ../ หมายถึงถอยออกจากโฟลเดอร์ Frontend 1 ชั้น */
     src: url('../Kanit/Kanit-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
@@ -14,24 +12,32 @@
     font-style: normal;
 }
 
-/* 2. ตั้งค่าพื้นฐานและ Layout */
+/* ตั้งค่าพื้นฐานและ Layout */
 * {
     box-sizing: border-box;
     font-family: 'Kanit', sans-serif;
 }
  
 body {
-    background-color: #095334;
+    background-image: url('https://i.pinimg.com/736x/92/24/73/9224738bb877c16fda3b343c50e667ba.jpg');
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    background-repeat: no-repeat; /* 1. สั่งไม่ให้รูปทำซ้ำ */
+    background-size: cover;      /* 2. สั่งให้รูปขยายเต็มหน้าจอ */
+    background-position: center; /* 3. จัดให้รูปภาพอยู่ตรงกลาง จะได้ไม่ตกขอบ */
+    background-attachment: fixed; /* 4. ล็อกรูปให้อยู่กับที่*/
 }
 
-/* 3. ตกแต่งฟอร์มให้ดูดี */
+/* ตกแต่งฟอร์มให้ดูดี */
 .container {
-    background: #ffffff;
+    /* เปลี่ยนสีพื้นหลังเป็นสีขาวแบบโปร่งใส (เลข 0.2 คือความทึบ ปรับได้ 0.1 - 0.9) */
+    background: rgba(255, 255, 255, 0.2); 
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px); 
+    border: 1px solid rgba(255, 255, 255, 0.4);
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -65,9 +71,24 @@ body {
 .form, textarea {
     flex: 1;
     padding: 8px 12px;
-    border: 1px solid #ddd;
+    background: rgba(255, 255, 255, 0.3); 
+    
+    /* เปลี่ยนเส้นขอบให้เป็นสีขาวจางๆ */
+    border: 1px solid rgba(255, 255, 255, 0.5); 
+    
     border-radius: 6px;
     font-size: 14px;
+    
+    /* กำหนดสีตัวหนังสือตอนที่ผู้ใช้พิมพ์ให้อ่านง่าย */
+    color: #333; 
+}
+
+/*เอฟเฟกต์เวลาคลิกที่ช่องกรอกข้อมูล ให้สีสว่างขึ้นนิดนึงจะได้รู้ว่ากำลังพิมพ์ช่องไหนอยู่ */
+.form:focus, textarea:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 6px; /* บังคับให้ขอบมนเหมือนเดิมตอนคลิก */
+    border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
 textarea {
@@ -79,7 +100,7 @@ textarea {
 .button {
     width: 100%;
     padding: 10px;
-    background-color: #4CAF50;
+    background-color: #000000;
     color: white;
     border: none;
     border-radius: 6px;
@@ -90,7 +111,8 @@ textarea {
 }
 
 .button:hover {
-    background-color: #45a049;
+    background-color: #2a5391;
+    color: rgb(255, 255, 255);
 }
 
 .message {
@@ -109,4 +131,18 @@ textarea {
 .message.danger {
     background-color: lightcoral;
     display: block;
+}
+
+/* เปลี่ยนสี Checkbox และ Radio Button เวลาถูกคลิก */
+input[type="radio"],
+input[type="checkbox"] {
+    /* เปลี่ยนรหัสสีตรงนี้เป็นสีที่คุณต้องการได้เลยครับ */
+    accent-color: #2a5391; /* ผมดึงสีน้ำเงินมาจากปุ่ม Hover ของคุณมาใช้เพื่อให้โทนสีเข้ากันครับ */
+    
+    /* (แถม) ทำให้เคอร์เซอร์เป็นรูปนิ้วชี้เวลาเอาเมาส์ไปวาง */
+    cursor: pointer; 
+    
+    /* (แถม) ปรับขนาดให้ใหญ่ขึ้นนิดนึงให้กดง่ายขึ้น (ถ้าไม่ชอบลบออกได้ครับ) */
+    width: 16px;
+    height: 16px;
 }
