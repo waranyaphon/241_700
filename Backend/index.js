@@ -10,22 +10,7 @@ app.use(bodyParser.json());
 
 const port = 8000;
 
-/*app.get('/testdb', (req, res) => {
-    mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'root',
-        database: 'webdb',
-        port: 8700
-    }).then((conn) => {
-        conn.query('SELECT * FROM users').then((result) => {
-            res.json(result[0]);
-        }).catch((err) => {
-            res.json({error: err.message});
-        });
-    });
-})*/
-
+//การเชื่อมต่อฐานข้อมูล
 let conn = null;
 const initMySQL = async () => {
     conn = await mysql.createConnection({
@@ -38,12 +23,14 @@ const initMySQL = async () => {
     console.log('Connected to MySQL database');
 }
 
+//ส่วนจัดการ API
 //path: = GET /users for get all users from database
 app.get('/users', async (req, res) => {
     const result = await conn.query('SELECT * FROM users');
     res.json(result[0])
 });
 
+//ตรวจสอบและเพิ่มข้อมูลผู้ใช้ใหม่
 //เพิ่ม
 const validateData = (userData) => {
     let errors = []; //มี error 2 ตัว index=0,1
@@ -146,11 +133,27 @@ app.delete('/users/:id', async (req, res) => {
     }
 });
 
+//การเปิดใช้งานเซิร์ฟเวอร์
 app.listen(port, async () => {
     await initMySQL();
     console.log(`Server is running on http://localhost:${port}`);
 });
 
+/*app.get('/testdb', (req, res) => {
+    mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: 'root',
+        database: 'webdb',
+        port: 8700
+    }).then((conn) => {
+        conn.query('SELECT * FROM users').then((result) => {
+            res.json(result[0]);
+        }).catch((err) => {
+            res.json({error: err.message});
+        });
+    });
+})*/
 
 /*ใช้ async await ง่ายกว่า
 app.get('/testdb-new', async (req, res) => {
